@@ -23,21 +23,21 @@
             "Australia", "Austria", "Azerbaijan", "Bahamas, The", "Bahrain", "Bangladesh", "Barbados",
             "Belgium", "Belize", "Benin", "Bhutan", "Bolivia", "Brazil", "Bulgaria", "Burkina Faso",
             "Burundi", "Cabo Verde", "Cambodia", "Canada", "Central African Republic", "Chad",
-            "Chile", "China, People's Republic of", "Colombia", "Comoros", "Congo, Republic of ",
-            "Costa Rica", "Croatia", "Cyprus", "Czech Republic", "Côte d'Ivoire", "Denmark",
+            "Chile", "China,  People\'s Republic of", "Colombia", "Comoros", "Congo,  Republic of ",
+            "Costa Rica", "Croatia", "Cyprus", "Czech Republic", "Côte d\'Ivoire", "Denmark",
             "Djibouti", "Dominica", "Dominican Republic", "Ecuador", "El Salvador", "Equatorial Guinea",
             "Estonia", "Eswatini", "Ethiopia", "Fiji", "Finland", "France", "Gabon", "Georgia", "Germany",
             "Ghana", "Greece", "Grenada", "Guatemala", "Guinea", "Guinea-Bissau", "Guyana", "Haiti", "Honduras",
             "Hong Kong SAR", "Hungary", "Iceland", "India", "Indonesia", "Iran", "Ireland", "Israel", "Italy",
-            "Jamaica", "Japan", "Jordan", "Kenya", "Kiribati", "Korea, Republic of", "Kuwait", "Kyrgyz Republic",
+            "Jamaica", "Japan", "Jordan", "Kenya", "Kiribati", "Korea,  Republic of", "Kuwait", "Kyrgyz Republic",
             "Lebanon", "Lesotho", "Luxembourg", "Madagascar", "Malaysia", "Maldives", "Marshall Islands", "Mexico",
-            "Micronesia, Fed. States of", "Moldova", "Mongolia", "Morocco", "Namibia", "Netherlands", "New Zealand",
+            "Micronesia,  Fed. States of", "Moldova", "Mongolia", "Morocco", "Namibia", "Netherlands", "New Zealand",
             "Nicaragua", "Niger", "Nigeria", "North Macedonia ", "Norway", "Oman", "Pakistan", "Panama", "Papua New Guinea",
             "Paraguay", "Peru", "Philippines", "Poland", "Portugal", "Qatar", "Romania", "Russian Federation", "Rwanda",
             "Saint Kitts and Nevis", "Saint Lucia", "Saint Vincent and the Grenadines", "Saudi Arabia", "Senegal",
             "Seychelles", "Slovak Republic", "Slovenia", "Solomon Islands", "South Africa", "Spain", "Sri Lanka",
             "Sudan", "Suriname", "Sweden", "Switzerland", "Tanzania", "Thailand", "Togo", "Trinidad and Tobago",
-            "Tunisia", "Türkiye, Republic of", "Uganda", "Ukraine", "United Arab Emirates", "United Kingdom",
+            "Tunisia", "Türkiye,  Republic of", "Uganda", "Ukraine", "United Arab Emirates", "United Kingdom",
             "United States", "Uruguay", "Uzbekistan", "Vanuatu", "Venezuela", "Yemen"];
         var ss = document.getElementById("optionCountry");
         for (let i = 0; i < countiesList.length; i++) {
@@ -59,10 +59,18 @@
             const objs = {};
             entries.map(entry => {
                 obj = entry.split(',');
-                if (!objs[obj[1]]) {
-                    objs[obj[1]] = {};
+                if (obj[2] != "no data" && Number.isNaN(parseFloat(obj[2]))){
+                    countryName = (obj[1] + ", " + obj[2]).slice(1,-1);
+                    oneRow = obj.slice(3);
+                } else {
+                    countryName = obj[1];
+                    oneRow = obj.slice(2);
                 }
-                oneRow = obj.slice(2);
+
+                if (!objs[countryName]) {
+                    objs[countryName] = {};
+                }
+                
                 oneRow = oneRow.map((s) => {
                     if (s.startsWith("no")) {
                         return 0;
@@ -72,11 +80,12 @@
                     return 0
                 })
                 if (obj[0] == "0") {
-                    objs[obj[1]]['expenditure'] = oneRow;
+                    objs[countryName]['expenditure'] = oneRow;
                 } else {
-                    objs[obj[1]]['revenue'] = oneRow;
+                    objs[countryName]['revenue'] = oneRow;
                 }
             })
+            console.log(objs)
             return objs;
         }
 
@@ -93,6 +102,7 @@
 
         function getSelectCountry(selectObject) {
             var value = selectObject.value;
+            console.log("selected country:", value)
             assembleData = [];
             for (let i = 0; i < years.length; i++) {
                 tmpObj = {};
