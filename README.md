@@ -10,3 +10,5 @@ For CS5346 task B web page display
 ## Files under this repo
 1. sample_data_revenue&expenditure.csv: the sample data collected from IMF
 2. diff_area.html: the visualization html page file, with D3.js script in it
+3. README.md: this file
+4. A0248401M-Masterpiece.pdf: related report
